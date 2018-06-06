@@ -103,7 +103,7 @@ func (t Result) Bool() bool {
 }
 
 // Int returns an integer representation.
-func (t Result) Int() int64 {
+func (t Result) Int64() int64 {
 	switch t.Type {
 	default:
 		return 0
@@ -127,8 +127,17 @@ func (t Result) Int() int64 {
 	}
 }
 
+// Int returns an integer representation.
+func (t Result) Int() int {
+	return int(t.Int64())
+}
+
 // Uint returns an unsigned integer representation.
-func (t Result) Uint() uint64 {
+func (t Result) Uint() uint32 {
+	return uint32(t.Uint64())
+}
+
+func (t Result) Uint64() uint64 {
 	switch t.Type {
 	default:
 		return 0
