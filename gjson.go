@@ -14,8 +14,6 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 	"unsafe"
-
-	"github.com/tidwall/match"
 )
 
 // Type is Result type
@@ -103,7 +101,7 @@ func (t Result) Bool() bool {
 }
 
 // Int returns an integer representation.
-func (t Result) Int64() int64 {
+func (t Result) Int() int64 {
 	switch t.Type {
 	default:
 		return 0
@@ -128,16 +126,16 @@ func (t Result) Int64() int64 {
 }
 
 // Int returns an integer representation.
-func (t Result) Int() int {
-	return int(t.Int64())
+func (t Result) Int32() int {
+	return int(t.Int())
 }
 
 // Uint returns an unsigned integer representation.
-func (t Result) Uint() uint32 {
-	return uint32(t.Uint64())
+func (t Result) Uint32() uint32 {
+	return uint32(t.Uint())
 }
 
-func (t Result) Uint64() uint64 {
+func (t Result) Uint() uint64 {
 	switch t.Type {
 	default:
 		return 0
@@ -977,9 +975,9 @@ func parseObject(c *parseContext, i int, path string) (int, bool) {
 		}
 		if rp.wild {
 			if kesc {
-				pmatch = match.Match(unescape(key), rp.part)
+				pmatch = Match(unescape(key), rp.part)
 			} else {
-				pmatch = match.Match(key, rp.part)
+				pmatch = Match(key, rp.part)
 			}
 		} else {
 			if kesc {
@@ -1085,7 +1083,7 @@ func queryMatches(rp *arrayPathResult, value Result) bool {
 		case ">=":
 			return value.Str >= rpv
 		case "%":
-			return match.Match(value.Str, rpv)
+			return Match(value.Str, rpv)
 		}
 	case Number:
 		rpvn, _ := strconv.ParseFloat(rpv, 64)
